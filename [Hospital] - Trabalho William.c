@@ -194,11 +194,17 @@ int main(void) {
 			break;
 			
 			case 4:  //Listar todas as consulta realizadas em um dia
-				printf("---------------------------------------------------------------------------\n");
-				printf("Informe uma data pra ver todas consultas realizadas(dd/mm/aaaa): ");
-				scanf("%d/%d/%d", &dia, &mes, &ano);
-				printf("---------------------------------------------------------------------------\n");
-				mostrar_consultas(dia, mes, ano);
+			
+				if(quant_consultas_registradas) {
+					printf("---------------------------------------------------------------------------\n");
+					printf("Informe uma data pra ver todas consultas realizadas(dd/mm/aaaa): ");
+					scanf("%d/%d/%d", &dia, &mes, &ano);
+					printf("---------------------------------------------------------------------------\n");
+					mostrar_consultas(dia, mes, ano);		
+				}else {
+					printf("\n\a\tNenhuma consulta realizada ate o momento...!!!\n");
+					system("pause > 1");
+				}
 			break;
 			
 			default:
@@ -364,14 +370,20 @@ void cadastrar_consulta(int i) { //Funçao para cadastrar consultas (Concluido)**
 }
 
 void mostrar_consultas(int dia, int mes, int ano) { //Funçao que mostrar todas as consultas de acordo com uma certa data (Concluido)**
-	int i;
+	int i, find = 0;
 	system("cls");
 	for(i=0; i<quant_consultas_registradas; i++) {
 		if((consultas[i].dia_Consulta == dia) && (consultas[i].mes_Consulta == mes) && (consultas[i].ano_Consulta == ano)) {
-			printf("Número prontuario: ", consultas[i].num_prontuario);
+			find = 1;
+			printf("Número prontuario: %i\n", consultas[i].num_prontuario);
 			printf("Nome do medico que realizou a consulta: %s\n", medicos[get_medico(consultas[i].cod_medico)].nome);
 			printf("Nome do paciente que foi consultado: %s\n", pacientes[get_paciente(consultas[i].cod_paciente)].nome);
+			system("pause > 1");
 		}
+	}
+	if(!find) {
+		printf("\n\aNenhuma consulta realizada no dia %d/%0d/%d\n", dia, mes, ano);
+		system("pause > 1");
 	}
 }
 
@@ -395,7 +407,7 @@ int get_paciente(char cod[]) { //Pegar o indice de acordo com o codigo do pacien
 int menu_principal() {
 	int op = 0;
 	system("cls");
-	while(op > 3 || op < 1) {	
+	while(op > 4 || op < 1) {	
 		printf("--------------------- Menu principal ----------------------\n");
 		printf("-----------------------------------------------------------\n");
 		printf("|1. CADASTRAR ou ALTERAR dados de Paciente ou Médico      |\n");
