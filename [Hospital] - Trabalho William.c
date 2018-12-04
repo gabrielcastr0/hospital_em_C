@@ -58,6 +58,7 @@ int menu_repetir_acao(int i, int j);
 int menu_repetir_cadastro_consulta();
 int get_medico(char cod[]);
 int get_paciente(char cod[]);
+int menu_bool(char mens[]);
 
 //Declaraçao de variaveis
 int quant_medicos_registrados = 0; //Salvar essa variavel no arquivo .txt
@@ -136,11 +137,38 @@ int main(void) {
 			break;
 			
 			case 2: //Cadastrar uma consulta
-				res = 1;
-				system("cls");
-				while(res == 1) {
-					cadastrar_consulta(quant_consultas_registradas);
-					res = menu_repetir_cadastro_consulta();
+			
+				if(quant_medicos_registrados) {
+					res = 1;
+					system("cls");
+					while(res == 1) {
+						cadastrar_consulta(quant_consultas_registradas);
+						res = menu_repetir_cadastro_consulta();
+					}				
+				}else {
+					system("cls");
+					res = menu_bool("\aNao existe nenhum médico cadastrado...\n\tDeseja cadastrar um médico agora: ");
+					if(res == 1) {
+						cadastrar_medico(quant_medicos_registrados);
+						res = 1;
+						if(quant_pacientes_registrados){
+							system("cls");
+							while(res == 1) {
+								cadastrar_consulta(quant_consultas_registradas);
+								res = menu_repetir_cadastro_consulta();
+							}				
+						}else {
+							res = menu_bool("\aNao existe nenhum paciente cadastrado...\n\tDeseja cadastrar um paciente agora: ");
+							if(res == 1) {
+								cadastrar_paciente(quant_pacientes_registrados);
+								system("cls");
+								while(res == 1) {
+									cadastrar_consulta(quant_consultas_registradas);
+									res = menu_repetir_cadastro_consulta();
+								}			
+							}
+						}
+					}
 				}
 			break;
 						
@@ -456,4 +484,26 @@ int menu_repetir_cadastro_consulta() {
 	}
 	system("cls");
 	
+}
+
+int menu_bool(char mens[]) {
+	int op = 1;
+	int key;
+	while(1){
+		system("cls");
+		printf("%s\n", mens);
+		printf("\n%s SIM\n", (op == 1) ? "->" : " ");
+		printf("%s NÃO\n", (op == 2) ? "->" : " ");
+		key = getch();
+		if(key == KEY_UP && op > 1) {
+			op--;
+		}else if(key == KEY_DOWN && op < 2) {
+			op++;
+		}else if(key == KEY_ESC) {
+			return 2;
+		}else if(key == KEY_ENTER) {
+			return op;
+		}
+	}
+	system("cls");
 }
