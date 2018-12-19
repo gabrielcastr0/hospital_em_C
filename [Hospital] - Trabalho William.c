@@ -267,7 +267,7 @@ void alterar_paciente(int i) { //Funçao que altera dados do paciente* (Concluido
 void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Concluido)**
 	// criando o ponteiro
 	FILE *ponteiroMed;
- 	ponteiroMed = fopen("dadosMédico.txt", "w"); // write
+ 	ponteiroMed = fopen("dadosMédico.txt", "a"); // append
 	/********************/
 	system("cls");
 	printf("------------------------------------------------ \n");
@@ -322,7 +322,15 @@ void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 	}
 	system("cls");
 	if(permss){
-		while(i < quant_medicos_registrados) {
+		printf("---------------------------------------------\n");
+		printf("\a-> Permissão para excluir médico negada...\n");
+		printf("---------------------------------------------\n");
+		system("pause");
+		system("cls");
+		main();
+	
+	}else {
+			while(i < quant_medicos_registrados) {
 			j = i + 1;
 			strcpy(medicos[i].cod_medico, medicos[j].cod_medico);
 			strcpy(medicos[i].endereco, medicos[j].endereco);
@@ -334,20 +342,28 @@ void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 		printf("---------------------------------\n");
 		printf("\a-> Médico excluído com sucesso!\n");
 		printf("---------------------------------\n");
-	}else {
-		printf("--------------------------------------------\n");
-		printf("\a-> Permissão para excluir médico negada...");
-		printf("--------------------------------------------\n");
+		system("pause");
+		system("cls");
+		main();
 	}
 	
 	// Excluindo arquivo.txt
 	int deletar;
 	
-	if(quant_consultas_registradas == 0){ 
+	if(quant_consultas_registradas != 0){ 
 		deletar = remove("dadosMédico.txt");
+		printf("------------------------------------------\n");
+		printf("\a-> dadosMédico.txt excluído com sucesso!\n");
+		printf("------------------------------------------\n");
+		system("pause");
+		system("cls");
 	}
 	else{
-		printf("Nope");
+		printf("-----------------------------------------------------\n");
+		printf("\a-> Permissão para excluir dadosMédico.txt negada...\n");
+		printf("-----------------------------------------------------\n"); 
+		system("pause");
+		system("cls");
 	}
 }
 
