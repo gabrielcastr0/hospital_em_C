@@ -89,7 +89,7 @@ int main(void) {
 					if(quant_pacientes_registrados){
 						while(res == 1) {
 							for(i = 0; i<quant_pacientes_registrados; i++) { //Lista todos os pacientes ja registrados
-								printf("-> %i. [%s] \n", i, pacientes[i].nome);
+								printf("-> %i. [%s] \n", i + 1, pacientes[i].nome);
 							}
 							printf("----------------------------------\n");
 							printf("-> Qual paciente deseja alterar? ");
@@ -117,7 +117,7 @@ int main(void) {
 					if(quant_medicos_registrados){
 						while(res == 1) {
 							for(i = 0; i<quant_medicos_registrados; i++) { //Lista todos os pacientes ja registrados
-								printf("-> %i. [%s] \n", i, medicos[i].nome);
+								printf("-> %i. [%s] \n", i + 1, medicos[i].nome);
 							}
 							printf("----------------------------------\n");
 							printf("-> Qual médico deseja alterar? ");
@@ -176,7 +176,7 @@ int main(void) {
 				system("cls");
 				if(quant_medicos_registrados) {
 					for(i = 0; i < quant_medicos_registrados; i++) {
-						printf("%i. [%s] \n", i, medicos[i].nome);
+						printf("%i. [%s] \n", i + 1, medicos[i].nome);
 					}
 					
 					printf("----------------------------------\n");
@@ -368,14 +368,14 @@ void cadastrar_consulta(int i) { //Funçao para cadastrar consultas (Concluido)**
 	printf("--------------------------------------------\n");
 	system("cls");
 	for(j = 0; j < quant_medicos_registrados; j++){ //Lista todos os medicos registrados
-		printf("-> %i. %s \n", j, medicos[i].nome);
+		printf("-> %i. %s \n", j + 1, medicos[i].nome);
 	}
 	printf("Qual médico realizou a consulta? ");
 	scanf("%i", &medico_selecionado);
 	strcpy(consultas[i].cod_medico, medicos[medico_selecionado].cod_medico);
 	system("cls");
 	for(j=0; j<quant_pacientes_registrados; j++) { //Lista todos pacientes registrados
-		printf("-> %i. %s \n", j, pacientes[i].nome);
+		printf("-> %i. %s \n", j + 1, pacientes[i].nome);
 	}
 	printf("Qual paciente foi consultado? ");
 	scanf("%i", &paciente_selecionado);
