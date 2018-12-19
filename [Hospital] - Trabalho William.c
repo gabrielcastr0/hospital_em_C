@@ -92,7 +92,7 @@ int main(void) {
 								printf("-> %i. [%s] \n", i, pacientes[i].nome);
 							}
 							printf("----------------------------------\n");
-							printf("Qual paciente deseja alterar?: ");
+							printf("-> Qual paciente deseja alterar? ");
 							scanf("%i", &paciente_selecionado);
 							printf("----------------------------------\n");
 							fflush(stdin);
@@ -120,7 +120,7 @@ int main(void) {
 								printf("-> %i. [%s] \n", i, medicos[i].nome);
 							}
 							printf("----------------------------------\n");
-							printf("Qual medico deseja alterar?: ");
+							printf("-> Qual médico deseja alterar? ");
 							scanf("%i", &medico_selecionado);
 							printf("----------------------------------\n");
 							fflush(stdin);
@@ -147,7 +147,7 @@ int main(void) {
 					}				
 				}else {
 					system("cls");
-					res = menu_bool("\aNao existe nenhum médico cadastrado...\n\tDeseja cadastrar um médico agora: ");
+					res = menu_bool("\a-> Não existe nenhum médico cadastrado...\n   *Deseja cadastrar um médico agora?* ");
 					if(res == 1) {
 						cadastrar_medico(quant_medicos_registrados);
 						res = 1;
@@ -158,7 +158,7 @@ int main(void) {
 								res = menu_repetir_cadastro_consulta();
 							}				
 						}else {
-							res = menu_bool("\aNao existe nenhum paciente cadastrado...\n\tDeseja cadastrar um paciente agora: ");
+							res = menu_bool("\a-> Não existe nenhum paciente cadastrado...\n   *Deseja cadastrar um paciente agora?*");
 							if(res == 1) {
 								cadastrar_paciente(quant_pacientes_registrados);
 								system("cls");
@@ -172,7 +172,7 @@ int main(void) {
 				}
 			break;
 						
-			case 3: //Excluir um medico
+			case 3: //Excluir um médico
 				system("cls");
 				if(quant_medicos_registrados) {
 					for(i = 0; i < quant_medicos_registrados; i++) {
@@ -180,20 +180,20 @@ int main(void) {
 					}
 					
 					printf("----------------------------------\n");
-					printf("\nQual médico deseja excluir?: ");
+					printf("-> Qual médico deseja excluir? ");
 					scanf("%i", &medico_selecionado);
 					fflush(stdin);
 					excluir_funcionario(medico_selecionado);
 					printf("----------------------------------\n");
 				}else {
 					printf("--------------------------------------------------\n");
-					printf("\n-> Não existe nenhum médico registrado ainda!\n");
+					printf("\a-> Não existe nenhum médico registrado ainda!\n");
 					printf("--------------------------------------------------\n");
 					system("pause > 1");
 				}
 			break;
 			
-			case 4:  //Listar todas as consulta realizadas em um dia
+			case 4:  //Listar todas as consultas realizadas em um dia
 			
 				if(quant_consultas_registradas) {
 					printf("---------------------------------------------------------------------------\n");
@@ -202,7 +202,9 @@ int main(void) {
 					printf("---------------------------------------------------------------------------\n");
 					mostrar_consultas(dia, mes, ano);		
 				}else {
-					printf("\n\a\tNenhuma consulta realizada ate o momento...!!!\n");
+					printf("-------------------------------------------------\n");
+					printf("\a-> Nenhuma consulta realizada até o momento...!\n");
+					printf("-------------------------------------------------\n");
 					system("pause > 1");
 				}
 			break;
@@ -218,7 +220,7 @@ int main(void) {
 void cadastrar_paciente(int i) { //Funçao que cadastra paciente (Concluido)**
 	// criando o ponteiro
 	FILE *ponteiro;
- 	ponteiro = fopen("dadosPaciente.txt", "w"); // write
+ 	ponteiro = fopen("dadosPaciente.txt", "a"); // append
 	/********************/
 	system("cls");
 	//  scanf("%s", pacientes[i].cod_paciente); //Remover essa linha quando o codigo for gerado automaticamente
@@ -295,7 +297,7 @@ void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Con
 	quant_medicos_registrados++;
 }
 
-void alterar_medico(int i) { //Funçao que altera dados de um funcionario(Medico) (Concluido)**
+void alterar_medico(int i) { //Funçao que altera dados de um Médico (Concluido)**
 	system("cls");
 	printf("-------------------------------------\n");
 	printf("Codigo do medico: %s\n\n", medicos[i].cod_medico);
@@ -311,7 +313,7 @@ void alterar_medico(int i) { //Funçao que altera dados de um funcionario(Medico)
 	printf("-------------------------------------\n");
 }
 
-void excluir_funcionario(int i) { //Funçao que exclui um funcionario(Medico) (Concluido)**
+void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 	int j, permss = 0;
 	for(j=0; j < quant_consultas_registradas; j++) {
 		if(strcmp(consultas[j].cod_medico, medicos[i].cod_medico) == 0){
@@ -329,13 +331,23 @@ void excluir_funcionario(int i) { //Funçao que exclui um funcionario(Medico) (Co
 			i++;
 		}
 		quant_medicos_registrados--;
-		printf("--------------------------------\n");
-		printf("\n->Médico excluído com sucesso!\n");
-		printf("--------------------------------\n");
+		printf("---------------------------------\n");
+		printf("\a-> Médico excluído com sucesso!\n");
+		printf("---------------------------------\n");
 	}else {
-		printf("-------------------------------------------\n");
-		printf("\n->Permissão para excluir medico negada...");
-		printf("-------------------------------------------\n");
+		printf("--------------------------------------------\n");
+		printf("\a-> Permissão para excluir médico negada...");
+		printf("--------------------------------------------\n");
+	}
+	
+	// Excluindo arquivo.txt
+	int deletar;
+	
+	if(quant_consultas_registradas == 0){ 
+		deletar = remove("dadosMédico.txt");
+	}
+	else{
+		printf("Nope");
 	}
 }
 
@@ -343,27 +355,29 @@ void cadastrar_consulta(int i) { //Funçao para cadastrar consultas (Concluido)**
 	
 	int j, medico_selecionado, paciente_selecionado;
 	
-	printf("Informe o numero do prontuario: ");
+	printf("--------------------------------------------\n");
+	printf("Informe o número do prontuário: ");
 	scanf("%d", &consultas[i].num_prontuario);
 	fflush(stdin);
 	printf("Informe a data da consulta (dd/mm/aaaa): ");
 	scanf("%d/%d/%d", &consultas[i].dia_Consulta, &consultas[i].mes_Consulta, &consultas[i].ano_Consulta);
 	fflush(stdin);
-	printf("Qual foi o diagnostico da consulta: \n");
+	printf("Qual foi o diagnóstico da consulta? ");
 	scanf("%s", consultas[i].diagnostico);
 	fflush(stdin);
+	printf("--------------------------------------------\n");
 	system("cls");
 	for(j = 0; j < quant_medicos_registrados; j++){ //Lista todos os medicos registrados
-		printf("%i. %s \n", j, medicos[i].nome);
+		printf("-> %i. %s \n", j, medicos[i].nome);
 	}
-	printf("Qual medico realizou a consulta: ");
+	printf("Qual médico realizou a consulta? ");
 	scanf("%i", &medico_selecionado);
 	strcpy(consultas[i].cod_medico, medicos[medico_selecionado].cod_medico);
 	system("cls");
 	for(j=0; j<quant_pacientes_registrados; j++) { //Lista todos pacientes registrados
-		printf("\t| %i |%s |\n", j, pacientes[i].nome);
+		printf("-> %i. %s \n", j, pacientes[i].nome);
 	}
-	printf("Qual paciente foi consultado: ");
+	printf("Qual paciente foi consultado? ");
 	scanf("%i", &paciente_selecionado);
 	strcpy(consultas[i].cod_paciente, pacientes[paciente_selecionado].cod_paciente);
 	quant_consultas_registradas++;
@@ -375,14 +389,16 @@ void mostrar_consultas(int dia, int mes, int ano) { //Funçao que mostrar todas a
 	for(i=0; i<quant_consultas_registradas; i++) {
 		if((consultas[i].dia_Consulta == dia) && (consultas[i].mes_Consulta == mes) && (consultas[i].ano_Consulta == ano)) {
 			find = 1;
-			printf("Número prontuario: %i\n", consultas[i].num_prontuario);
-			printf("Nome do medico que realizou a consulta: %s\n", medicos[get_medico(consultas[i].cod_medico)].nome);
+			printf("----------------------------------------------\n");
+			printf("Número prontuário: %i\n", consultas[i].num_prontuario);
+			printf("Nome do médico que realizou a consulta: %s\n", medicos[get_medico(consultas[i].cod_medico)].nome);
 			printf("Nome do paciente que foi consultado: %s\n", pacientes[get_paciente(consultas[i].cod_paciente)].nome);
+			printf("----------------------------------------------\n");
 			system("pause > 1");
 		}
 	}
 	if(!find) {
-		printf("\n\aNenhuma consulta realizada no dia %d/%0d/%d\n", dia, mes, ano);
+		printf("\a-> Nenhuma consulta realizada no dia %d/%0d/%d\n", dia, mes, ano);
 		system("pause > 1");
 	}
 }
@@ -408,7 +424,7 @@ int menu_principal() {
 	int op = 0;
 	system("cls");
 	while(op > 4 || op < 1) {	
-		printf("--------------------- Menu principal ----------------------\n");
+		printf("------------------------ HospiTOP -------------------------\n");
 		printf("-----------------------------------------------------------\n");
 		printf("|1. CADASTRAR ou ALTERAR dados de Paciente ou Médico      |\n");
 		printf("|2. CADASTRAR consulta                                    |\n");
@@ -454,10 +470,10 @@ int menu_repetir_acao(int i, int j) {
 	int key;
 	while(1){
 		system("cls");
-		printf("------------------------------------ \n");
-		printf("->%s %s com Sucesso...\n",(i == 1) ? "Paciente" : "Medico", (j == 1) ? "cadastrado" : "alterado");
-		printf("------------------------------------ \n");
-		printf("\nDeseja %s outro %s: \n", (j == 1) ? "cadastrar" : "alterar", (i == 1) ? "paciente" : "medico");
+		printf("------------------------------------- \n");
+		printf("-> %s %s com Sucesso...\n",(i == 1) ? "Paciente" : "Medico", (j == 1) ? "cadastrado" : "alterado");
+		printf("------------------------------------- \n");
+		printf("\nDeseja %s outro %s: \n", (j == 1) ? "cadastrar" : "alterar", (i == 1) ? "paciente" : "médico");
 		printf("\n%s SIM\n", (op == 1) ? "->" : " ");
 		printf("%s NÃO\n", (op == 2) ? "->" : " ");
 		key = getch();
@@ -479,8 +495,10 @@ int menu_repetir_cadastro_consulta() {
 	int key;
 	while(1){
 		system("cls");
-		printf("Consulta cadastrada com Sucesso...\n");
-		printf("\nDeseja cadastrar outra consulta: \n");
+		printf("------------------------------------- \n");
+		printf("-> Consulta cadastrada com Sucesso...\n");
+		printf("------------------------------------- \n");
+		printf("\n-> Deseja cadastrar outra consulta? \n");
 		printf("\n%s SIM\n", (op == 1) ? "->" : " ");
 		printf("%s NÃO\n", (op == 2) ? "->" : " ");
 		key = getch();
