@@ -116,7 +116,7 @@ int main(void) {
 					res = 1;
 					if(quant_medicos_registrados){
 						while(res == 1) {
-							for(i = 0; i<quant_medicos_registrados; i++) { //Lista todos os pacientes ja registrados
+							for(i = 0; i<quant_medicos_registrados; i++) { //Lista todos os medicos ja registrados
 								printf("-> %i. [%s] \n", i + 1, medicos[i].nome);
 							}
 							printf("----------------------------------\n");
@@ -176,13 +176,13 @@ int main(void) {
 				system("cls");
 				if(quant_medicos_registrados) {
 					for(i = 0; i < quant_medicos_registrados; i++) {
-						printf("%i. [%s] \n", i + 1, medicos[i].nome);
+						printf("%i. [%s] \n", i + 1, medicos[i].nome); // Lista todos os médicos registrados 
 					}
 					
 					printf("----------------------------------\n");
 					printf("-> Qual médico deseja excluir? ");
 					scanf("%i", &medico_selecionado);
-					fflush(stdin);
+					fflush(stdin); 
 					excluir_funcionario(medico_selecionado);
 					printf("----------------------------------\n");
 				}else {
@@ -238,7 +238,7 @@ void cadastrar_paciente(int i) { //Funçao que cadastra paciente (Concluido)**
 	scanf("%i", &pacientes[i].idade);
 	fflush(stdin);
 	printf("------------------------------------------------ \n");
-	// salvando os dados do paciente no arquivo
+	// salvando os dados do paciente no dadosPaciente.txt
 	fprintf(ponteiro, "------ Dados do Paciente ------\n");
 	fprintf(ponteiro, "Código: %s\n", pacientes[i].cod_paciente);
 	fprintf(ponteiro, "Nome: %s\n", pacientes[i].nome);
@@ -262,6 +262,8 @@ void alterar_paciente(int i) { //Funçao que altera dados do paciente* (Concluido
 	printf("Informe a idade do paciente: ");
 	scanf("%i", &pacientes[i].idade);
 	fflush(stdin);
+	
+	//Lembrar de alterar no dadodsPaciente.txt
 }
 
 void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Concluido)**
@@ -271,11 +273,11 @@ void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Con
 	/********************/
 	system("cls");
 	printf("------------------------------------------------ \n");
-	//	printf("Informe o codigo do medico: "); //Fazer uma funçao pra gerar esse codigo de forma automatica
-	//	scanf("%s", medicos[i].cod_medico); //Quando o codigo for gerado de forma automatica excluir essa linha
-	//	fflush(stdin);
-	printf("O código do médico é: [%d]" , rand() % 1000);	
-	printf("\nInforme o nome do medico: ");
+	printf("Informe o codigo do medico: "); //Fazer uma funçao pra gerar esse codigo de forma automatica
+	scanf("%s", medicos[i].cod_medico); //Quando o codigo for gerado de forma automatica excluir essa linha
+	fflush(stdin);
+	//	printf("O código do médico é: [%d]" , rand() % 1000);	
+	printf("Informe o nome do medico: ");
 	scanf("%s", medicos[i].nome);
 	fflush(stdin);
 	printf("Informe o endereço do medico: ");
@@ -287,7 +289,7 @@ void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Con
 	printf("------------------------------------------------ \n");
 	// salvando os dados do médico no arquivo
 	fprintf(ponteiroMed, "------ Dados do Médico ------\n");
-	fprintf(ponteiroMed, "Código: %s\n", medicos[i].cod_medico);
+	fprintf(ponteiroMed, "Código: 00%s\n", medicos[i].cod_medico);
 	fprintf(ponteiroMed, "Nome: %s\n", medicos[i].nome);
 	fprintf(ponteiroMed, "Endereço: %s\n", medicos[i].endereco);
 	fprintf(ponteiroMed, "Salário: R$%.2f reais\n", medicos[i].salario);
@@ -350,7 +352,7 @@ void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 	// Excluindo arquivo.txt
 	int deletar;
 	
-	if(quant_consultas_registradas != 0){ 
+	if(quant_consultas_registradas == 0){ 
 		deletar = remove("dadosMédico.txt");
 		printf("------------------------------------------\n");
 		printf("\a-> dadosMédico.txt excluído com sucesso!\n");
