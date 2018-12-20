@@ -89,7 +89,7 @@ int main(void) {
 					if(quant_pacientes_registrados){
 						while(res == 1) {
 							for(i = 0; i<quant_pacientes_registrados; i++) { //Lista todos os pacientes ja registrados
-								printf("-> %i. [%s] \n", i + 1, pacientes[i].nome);
+								printf("-> %i. [%s] \n", i, pacientes[i].nome);
 							}
 							printf("----------------------------------\n");
 							printf("-> Qual paciente deseja alterar? ");
@@ -116,8 +116,8 @@ int main(void) {
 					res = 1;
 					if(quant_medicos_registrados){
 						while(res == 1) {
-							for(i = 0; i<quant_medicos_registrados; i++) { //Lista todos os medicos ja registrados
-								printf("-> %i. [%s] \n", i + 1, medicos[i].nome);
+							for(i = 0; i<quant_medicos_registrados; i++) { //Lista todos os pacientes ja registrados
+								printf("-> %i. [%s] \n", i, medicos[i].nome);
 							}
 							printf("----------------------------------\n");
 							printf("-> Qual médico deseja alterar? ");
@@ -176,13 +176,13 @@ int main(void) {
 				system("cls");
 				if(quant_medicos_registrados) {
 					for(i = 0; i < quant_medicos_registrados; i++) {
-						printf("%i. [%s] \n", i + 1, medicos[i].nome); // Lista todos os médicos registrados 
+						printf("%i. [%s] \n", i, medicos[i].nome);
 					}
 					
 					printf("----------------------------------\n");
 					printf("-> Qual médico deseja excluir? ");
 					scanf("%i", &medico_selecionado);
-					fflush(stdin); 
+					fflush(stdin);
 					excluir_funcionario(medico_selecionado);
 					printf("----------------------------------\n");
 				}else {
@@ -218,6 +218,7 @@ int main(void) {
 
 //Funçoes que realizam as operaçoes
 void cadastrar_paciente(int i) { //Funçao que cadastra paciente (Concluido)**
+	//char olhar[1000];
 	// criando o ponteiro
 	FILE *ponteiro;
  	ponteiro = fopen("dadosPaciente.txt", "a"); // append
@@ -225,9 +226,10 @@ void cadastrar_paciente(int i) { //Funçao que cadastra paciente (Concluido)**
 	system("cls");
 	//  scanf("%s", pacientes[i].cod_paciente); //Remover essa linha quando o codigo for gerado automaticamente
 	//	fflush(stdin);
-	srand(time(NULL));
 	printf("------------------------------------------------ \n");
-	printf("O código do paciente é: [%d]" , rand() % 1000);		
+	printf("Dê um código ao paciente: ");
+	scanf("%s", pacientes[i].cod_paciente);
+	fflush(stdin);		
 	printf("\nInforme o nome do paciente: ");
 	scanf("%[^\n]s", pacientes[i].nome);
 	fflush(stdin);
@@ -238,9 +240,14 @@ void cadastrar_paciente(int i) { //Funçao que cadastra paciente (Concluido)**
 	scanf("%i", &pacientes[i].idade);
 	fflush(stdin);
 	printf("------------------------------------------------ \n");
-	// salvando os dados do paciente no dadosPaciente.txt
+ 	
+ 	// ler dados
+	/*	while(fgets(olhar, 1000, lerDados) != NULL){
+		printf("%s", olhar);
+	}*/
+	// salvando os dados do paciente no arquivo
 	fprintf(ponteiro, "------ Dados do Paciente ------\n");
-	fprintf(ponteiro, "Código: %s\n", pacientes[i].cod_paciente);
+	fprintf(ponteiro, "Código: 00%s\n", pacientes[i].cod_paciente);
 	fprintf(ponteiro, "Nome: %s\n", pacientes[i].nome);
 	fprintf(ponteiro, "Endereço: %s\n", pacientes[i].endereco);
 	fprintf(ponteiro, "Idade: %i anos\n", pacientes[i].idade);
@@ -251,8 +258,13 @@ void cadastrar_paciente(int i) { //Funçao que cadastra paciente (Concluido)**
 }
 
 void alterar_paciente(int i) { //Funçao que altera dados do paciente* (Concluido)**
+	
+//	FILE *lerDados;
+//	lerDados = fopen("dadosPaciente.txt", "r"); //read
+//	fscanf(lerDados, "%s %[^\n]s %[^\n]s %i", &pacientes[i].cod_paciente, &pacientes[i].nome, &pacientes[i].endereco, &pacientes[i].idade);
+	
 	system("cls");
-	printf("Código do paciente: %s\n\n", pacientes[i].cod_paciente);
+	printf("Código do paciente: 00%s", pacientes[i].cod_paciente);
 	printf("Informe o nome do paciente: ");
 	scanf("%s", pacientes[i].nome);
 	fflush(stdin);
@@ -262,8 +274,6 @@ void alterar_paciente(int i) { //Funçao que altera dados do paciente* (Concluido
 	printf("Informe a idade do paciente: ");
 	scanf("%i", &pacientes[i].idade);
 	fflush(stdin);
-	
-	//Lembrar de alterar no dadodsPaciente.txt
 }
 
 void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Concluido)**
@@ -273,11 +283,13 @@ void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Con
 	/********************/
 	system("cls");
 	printf("------------------------------------------------ \n");
-	printf("Informe o codigo do medico: "); //Fazer uma funçao pra gerar esse codigo de forma automatica
-	scanf("%s", medicos[i].cod_medico); //Quando o codigo for gerado de forma automatica excluir essa linha
-	fflush(stdin);
-	//	printf("O código do médico é: [%d]" , rand() % 1000);	
-	printf("Informe o nome do medico: ");
+	//	printf("Informe o codigo do medico: "); //Fazer uma funçao pra gerar esse codigo de forma automatica
+	//	scanf("%s", medicos[i].cod_medico); //Quando o codigo for gerado de forma automatica excluir essa linha
+	//	fflush(stdin);
+	printf("Dê um código ao médico: ");
+	scanf("%s", medicos[i].cod_medico);
+	fflush(stdin);		
+	printf("\nInforme o nome do medico: ");
 	scanf("%s", medicos[i].nome);
 	fflush(stdin);
 	printf("Informe o endereço do medico: ");
@@ -302,7 +314,7 @@ void cadastrar_medico(int i) { //Funçao que cadastra um funcionario(Medico) (Con
 void alterar_medico(int i) { //Funçao que altera dados de um Médico (Concluido)**
 	system("cls");
 	printf("-------------------------------------\n");
-	printf("Codigo do medico: %s\n\n", medicos[i].cod_medico);
+	printf("Código do médico: 00%s", medicos[i].cod_medico);
 	printf("Informe o nome do medico: ");
 	scanf("%[^\n]s", medicos[i].nome);
 	fflush(stdin);
@@ -329,10 +341,8 @@ void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 		printf("---------------------------------------------\n");
 		system("pause");
 		system("cls");
-		main();
-	
 	}else {
-			while(i < quant_medicos_registrados) {
+		while(i < quant_medicos_registrados) {
 			j = i + 1;
 			strcpy(medicos[i].cod_medico, medicos[j].cod_medico);
 			strcpy(medicos[i].endereco, medicos[j].endereco);
@@ -346,7 +356,6 @@ void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 		printf("---------------------------------\n");
 		system("pause");
 		system("cls");
-		main();
 	}
 	
 	// Excluindo arquivo.txt
@@ -368,10 +377,14 @@ void excluir_funcionario(int i) { //Funçao que exclui um Médico (Concluido)**
 		system("cls");
 	}
 }
-
+//TESTEEEEEEEEEEEEEEEEEEEEE
 void cadastrar_consulta(int i) { //Funçao para cadastrar consultas (Concluido)**
 	
 	int j, medico_selecionado, paciente_selecionado;
+	//criar Ponteiro
+	FILE *ponteiroConsultas;
+	ponteiroConsultas = fopen("dadosConsulta.txt", "a");
+	/**********************/
 	
 	printf("--------------------------------------------\n");
 	printf("Informe o número do prontuário: ");
@@ -386,18 +399,27 @@ void cadastrar_consulta(int i) { //Funçao para cadastrar consultas (Concluido)**
 	printf("--------------------------------------------\n");
 	system("cls");
 	for(j = 0; j < quant_medicos_registrados; j++){ //Lista todos os medicos registrados
-		printf("-> %i. %s \n", j + 1, medicos[i].nome);
+		printf("-> %i. %s \n", j, medicos[i].nome);
 	}
 	printf("Qual médico realizou a consulta? ");
 	scanf("%i", &medico_selecionado);
 	strcpy(consultas[i].cod_medico, medicos[medico_selecionado].cod_medico);
 	system("cls");
 	for(j=0; j<quant_pacientes_registrados; j++) { //Lista todos pacientes registrados
-		printf("-> %i. %s \n", j + 1, pacientes[i].nome);
+		printf("-> %i. %s \n", j, pacientes[i].nome);
 	}
 	printf("Qual paciente foi consultado? ");
 	scanf("%i", &paciente_selecionado);
 	strcpy(consultas[i].cod_paciente, pacientes[paciente_selecionado].cod_paciente);
+	//salvando dados em dadosConsultas.txt
+	fprintf(ponteiroConsultas, "------------------------------Dados de Consulta---------------------------------\n");
+	fprintf(ponteiroConsultas, "Data da consulta: %d/%d/%d\n", consultas[i].dia_Consulta, consultas[i].mes_Consulta, consultas[i].ano_Consulta);
+	fprintf(ponteiroConsultas, "Diagnóstico da consulta: %s\n", consultas[i].diagnostico);
+	fprintf(ponteiroConsultas, "Médico que realizou a consulta: %s\n", medicos[i].nome);
+	fprintf(ponteiroConsultas, "Paciente que realizou a consulta: %s\n", pacientes[i].nome);
+	fprintf(ponteiroConsultas, "-------------------------------------------------------------------------------\n");
+	fclose(ponteiroConsultas);
+	/***********************************/
 	quant_consultas_registradas++;
 }
 
@@ -481,6 +503,7 @@ int menu_cadastrar_alterar_paciente_medico() {
 			return op;
 		}
 	}
+//	tttttt
 }
 
 int menu_repetir_acao(int i, int j) {
